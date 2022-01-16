@@ -35,19 +35,6 @@ AProceduralSeaActor::AProceduralSeaActor()
 void AProceduralSeaActor::BeginPlay()
 {
 	Super::BeginPlay();
-	if (Material && !m_materialInstance)
-	{
-		m_materialInstance = UMaterialInstanceDynamic::Create(Material, this);
-		for (auto& t : SeaTiles)
-		{
-			t.ProceduralSeaTile->SetMaterial(0, m_materialInstance);
-		}
-	}
-}
-
-void AProceduralSeaActor::PostLoad()
-{
-	Super::PostLoad();
 	if (Material)
 	{
 		m_materialInstance = UMaterialInstanceDynamic::Create(Material, this);
@@ -60,15 +47,24 @@ void AProceduralSeaActor::PostLoad()
 			FUProceduralSeaTile& tile = SeaTiles[i * TileNumber.X + j];
 
 			FVector
-				aa = {		(i - TileNumber.X / 2) * Size.X / (float)TileNumber.X,		(j - TileNumber.Y / 2) * Size.Y / (float)TileNumber.Y, 0 },
-				bb = {	(i - TileNumber.X / 2 + 1) * Size.X / (float)TileNumber.X,	(j - TileNumber.Y / 2 + 1) * Size.Y / (float)TileNumber.Y, 0 };
-			tile.CreateTile(aa, bb, 
+				aa = { (i - TileNumber.X / 2) * Size.X / (float)TileNumber.X,		(j - TileNumber.Y / 2) * Size.Y / (float)TileNumber.Y, 0 },
+				bb = { (i - TileNumber.X / 2 + 1) * Size.X / (float)TileNumber.X,	(j - TileNumber.Y / 2 + 1) * Size.Y / (float)TileNumber.Y, 0 };
+			tile.CreateTile(aa, bb,
 				i == TileNumber.X / 2 && j == TileNumber.Y / 2
 				? Subdivisions
 				: Subdivisions / 4,
 				m_currentNoisePos, NoiseScale, NoiseStrength);
 			if (tile.ProceduralSeaTile && m_materialInstance)
 				tile.ProceduralSeaTile->SetMaterial(0, m_materialInstance);
+		}
+	}
+
+	if (Material && !m_materialInstance)
+	{
+		m_materialInstance = UMaterialInstanceDynamic::Create(Material, this);
+		for (auto& t : SeaTiles)
+		{
+			t.ProceduralSeaTile->SetMaterial(0, m_materialInstance);
 		}
 	}
 }
@@ -144,6 +140,9 @@ void FUProceduralSeaTile::UpdateTileSubdivs(FIntPoint divs, const float noiseSca
 
 void FUProceduralSeaTile::UpdateTileNoise(const float noiseScale, const float noiseStrength, const FVector2D& noisePos, const FVector2D& drift)
 {
+	auto t = ProceduralSeaTile->GetComponentTransform();
+	FVector p = t.GetTranslation();
+
 	for (int32 i = 0; i < Verts.Num(); i++)
 	{
 		

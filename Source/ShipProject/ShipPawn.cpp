@@ -59,6 +59,22 @@ void AShipPawn::BeginPlay()
 	ShipHull->GetLocalBounds(hullMin, hullMax);
 	m_hullSideA = (hullMax.X - hullMin.X);
 	m_hullSideB = (hullMax.Y - hullMin.Y);
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 120, FColor::Yellow, TEXT("You are sailing down the wind, or, as we sailors call it, running downwind."), false);
+		GEngine->AddOnScreenDebugMessage(-1, 120, FColor::Yellow, TEXT("But what is it ahead? A number of pure white columns arose from the water..."), false);
+		/*GEngine->AddOnScreenDebugMessage(-1, 120, FColor::Yellow, TEXT("I haven't seen such thing!"), false);
+		GEngine->AddOnScreenDebugMessage(-1, 120, FColor::Yellow, TEXT("Almost as though a beginner game developer had put them there to give some sence of orientation to the scene..."), false);*/
+		GEngine->AddOnScreenDebugMessage(-1, 120, FColor::Yellow, TEXT("Try going around the columns in a snake-like manner."), false);
+		GEngine->AddOnScreenDebugMessage(-1, 120, FColor::Yellow, TEXT("Keep in mind, the fluyt cannot sail upwind!"), false);
+		GEngine->AddOnScreenDebugMessage(-1, 120, FColor::Yellow, TEXT("Control the speed by aligning the sails to the wind,"), false);
+		GEngine->AddOnScreenDebugMessage(-1, 120, FColor::Yellow, TEXT("turn using the rudder. Good luck!"), false);
+
+		GEngine->AddOnScreenDebugMessage(-1, 1200, FColor::Yellow, TEXT("Controls:"), false);
+		GEngine->AddOnScreenDebugMessage(-1, 1200, FColor::Yellow, TEXT("Turn rudder:\tA <-> D"), false);
+		GEngine->AddOnScreenDebugMessage(-1, 1200, FColor::Yellow, TEXT("Turn sails:\tQ <-> E"), false);
+		GEngine->AddOnScreenDebugMessage(-1, 1200, FColor::Yellow, TEXT("Exit game:\tEsc"), false);
+	}
 }
 
 FVector2D AShipPawn::GetWindForce() const
