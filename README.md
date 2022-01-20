@@ -1,6 +1,6 @@
 # UE4_ShipProject
 
-A little educational project created while learning the basics of UE.
+A little educational project created while learning the basics of UE. For more info see the [PDF](./ShipProject.pdf).
 
 ## Executable
 
